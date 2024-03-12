@@ -53,6 +53,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import ImageUpload from "./imageUpload";
 
 export const formSchema =
   typeof window !== "undefined"
@@ -267,69 +268,7 @@ const TiptapMenu = ({ editor }: { editor: Editor | null }) => {
 
       {/* Image */}
 
-      <Dialog>
-        <DialogTrigger asChild>
-          <Toggle variant={"outline"} pressed={editor.isActive("link")}>
-            <RiImage2Fill />
-          </Toggle>
-        </DialogTrigger>
-        <div></div>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Drop Photo</DialogTitle>
-          </DialogHeader>
-          {imagePreview && (
-            <div className="flex flex-wrap justify-center items-center gap-2">
-              {imagePreview.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt="preview"
-                  className="w-20 h-20 object-cover"
-                />
-              ))}
-            </div>
-          )}
-          <Form {...form}>
-            <form method="POST" onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name="imgFile"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        ref={field.ref}
-                        name={field.name}
-                        onBlur={field.onBlur}
-                        onChange={(e) => {
-                          const file = e.target.files;
-                          field.onChange(file);
-                          if (file) {
-                            const files = Array.from(file);
-                            setImagePreview(
-                              files.map((file) => URL.createObjectURL(file))
-                            );
-                          }
-                        }}
-                        multiple={true}
-                      ></Input>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <DialogFooter className="flex gap-3 justify-end">
-                <DialogClose>Close</DialogClose>
-                <Button variant={"default"} type="submit">
-                  Add Image
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
+      <ImageUpload editor={editor} />
 
       <pre>|</pre>
 
